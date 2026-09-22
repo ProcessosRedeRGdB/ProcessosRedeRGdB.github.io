@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Processos da Rede | Renault</title>
+  <link rel="icon" sizes="any" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='white'/%3E%3Cpath d='M32 6 54 32 32 58 10 32 32 6Zm0 10L18.5 32 32 48l13.5-16L32 16Z' fill='%23141517'/%3E%3C/svg%3E">
+  <link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='white'/%3E%3Cpath d='M32 6 54 32 32 58 10 32 32 6Zm0 10L18.5 32 32 48l13.5-16L32 16Z' fill='%23141517'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./assets/fonts.css"><link rel="stylesheet" href="./assets/dashboard.css">
+</head>
+<body data-embedded="false" data-mode="github-pages">
+  <div id="progressOverlay" class="progress-overlay" aria-live="polite">
+    <div class="progress-card">
+      <div class="loading-logo"><img src="./assets/renault-logo.png" alt="Renault"></div>
+      <p class="eyebrow">QUALIDADE &amp; MÉTODOS DE REDE</p>
+      <h1 id="progressStage">Preparando dashboard</h1>
+      <div class="progress-track"><span id="progressBar"></span></div>
+      <div class="progress-meta"><span id="progressPercent">0%</span><span id="progressElapsed">0s</span></div>
+      <p id="progressMessage" class="muted">Localizando as bases.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header class="report-header">
+      <div class="brand-wrap">
+        <div class="logo"><img src="./assets/renault-logo.png" alt="Renault"></div>
+        <div>
+          <div class="brand-tag">Renault · Processos da Rede</div>
+          <h1>KPIs de Processos</h1>
+          <div class="brand-sub">Acompanhamento mensal · Conectividade, DDA, Battery Check e LTSM</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="pill">Gerado em <strong id="generatedAt">–</strong></div>
+        <div class="renault-bar"></div>
+      </div>
+    </header>
+
+
+    <main>
+      <nav id="processTabs" class="tabs process-tabs" aria-label="Processos">
+        <button type="button" class="process-tab active" data-page="overview">Resumo dos Processos</button>
+        <button type="button" class="process-tab" data-process="conectividade">Conectividade</button>
+        <button type="button" class="process-tab" data-process="dda">DDA</button>
+        <button type="button" class="process-tab" data-process="battery_check">Battery Check</button>
+        <button type="button" class="process-tab" data-process="ltsm">LTSM</button>
+      </nav>
+
+      <section id="processOverview" class="overview-workspace">
+        <div class="overview-intro">
+          <div>
+            <p class="eyebrow">VISÃO EXECUTIVA</p>
+            <h2>Resumo dos Processos</h2>
+            <p id="overviewDescription">Leitura rápida do resultado mais recente disponível em cada processo.</p>
+          </div>
+          <div class="overview-score">
+            <strong id="overviewGoalCount">–</strong>
+            <span id="overviewGoalLabel">processos com meta no objetivo</span>
+          </div>
+        </div>
+        <section class="overview-filterbar" aria-label="Filtros do resumo dos processos">
+          <div class="overview-filter-group"><span>Meses</span><div id="overviewMonthChips" class="overview-filter-chips"></div></div>
+          <div class="overview-filter-group"><span>Regionais</span><div id="overviewRegionChips" class="overview-filter-chips"></div></div>
+          <div id="overviewFilterNote" class="overview-filter-note"></div>
+        </section>
+        <div id="overviewCards" class="overview-grid"></div>
+        <div class="overview-note">
+          <span class="overview-note-mark">i</span>
+          <p>O mês em andamento é identificado como parcial. Nos meses encerrados, DDA, LTSM e Battery Check priorizam o fechamento D+15; Conectividade não utiliza D+15.</p>
+        </div>
+      </section>
+
+      <section id="processWorkspace" class="process-workspace" hidden>
+        <nav class="subtabs" aria-label="Visões do processo">
+          <button type="button" class="subtab active" data-view="performance">Desempenho Brasil e Regional</button>
+          <button type="button" class="subtab" data-view="snapshots">Evolução dos Fechamentos</button>
+          <button type="button" class="subtab" data-view="ranking">Ranking</button>
+          <button type="button" class="subtab" data-view="timeline">Linha do tempo</button>
+          <button type="button" class="subtab" data-view="topflop">Top e Flop</button>
+          <button type="button" class="subtab" data-view="search">Pesquisar Grupo / Concessionária</button>
+          <button type="button" class="subtab" data-view="chassis">Chassis</button>
+        </nav>
+
+        <section class="filter-bar" aria-label="Filtros do relatório">
+          <div class="process-context"><span class="process-swatch"></span><div><span class="filter-label">Processo</span><strong id="processTitle">Conectividade</strong></div><span id="processGoal" class="goal-badge">Objetivo 70,0%</span></div>
+          <label class="select-control"><span>Período</span><select id="periodSelect"></select></label>
+          <div id="snapshotFilterGroup" class="filter-group"><span>Fotografia</span><div id="snapshotToggle" class="segmented"></div></div>
+          <div id="regionFilterGroup" class="filter-group region-group"><span>Regionais</span><div id="regionChips" class="filter-chips"></div></div>
+          <div class="report-actions">
+            <button type="button" id="refreshView">Atualizar</button>
+            <button type="button" id="reloadBases" class="server-only">Recarregar bases</button>
+            <button type="button" id="exportFull" class="server-only">HTML completo (offline)</button>
+            <button type="button" id="exportPhone" class="server-only">HTML iPhone/WhatsApp</button>
+            <button type="button" id="exportGithub" class="server-only">GitHub Pages (.zip)</button>
+            <label class="server-only" title="VINs incluídos ficarão acessíveis aos visitantes do site."><input type="checkbox" id="includeChassis"> Incluir chassis (VINs públicos)</label>
+            <button type="button" id="openDiagnostics">Conferência</button>
+          </div>
+        </section>
+
+        <section id="performance" class="view-panel active">
+          <div id="ytdLiveCard" class="ytd-live-card" hidden></div>
+          <div class="period-block">
+            <div class="period-title copy-title"><span id="performancePeriodTitle">Resultado do período</span><button type="button" class="copy-image" data-copy="performanceBlock" aria-label="Copiar imagem">⧉<span class="copy-label">Copiar</span></button></div>
+            <div id="performanceRangeNote" class="period-range-note"></div>
+            <div id="performanceBlock" class="day-scroll process-day-scroll">
+              <div class="tables-grid process-tables-grid">
+                <article class="kpi-card process-kpi-card">
+                  <div id="performanceTableTitle" class="kpi-card-title">Conectividade</div>
+                  <div class="table-wrap"><table id="regionalTable" class="summary-table process-summary-table"></table></div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="snapshots" class="view-panel">
+          <div class="entity-modebar snapshot-history-modebar">
+            <div><p class="eyebrow">MÊS DE REFERÊNCIA × DATA DA EXTRAÇÃO</p><h3>Evolução dos Fechamentos</h3></div>
+            <div class="modebar-right"><label>Escopo<select id="snapshotScopeSelect"></select></label></div>
+          </div>
+          <div class="snapshot-history-note" id="snapshotHistoryNote">
+            <span>i</span>
+            <p><strong>YTD mais atual</strong> mostra o resultado de cada mês recalculado pela última base anual recebida. Não é a soma nem a média dos fechamentos mensais.</p>
+          </div>
+          <div id="snapshotSummaryCards" class="snapshot-summary-cards"></div>
+          <div class="period-block">
+            <div class="period-title copy-title"><span id="snapshotHistoryTitle">Comparativo das fotografias</span><button type="button" class="copy-image" data-copy="snapshotHistoryBlock" aria-label="Copiar imagem">⧉<span class="copy-label">Copiar</span></button></div>
+            <div id="snapshotHistoryBlock" class="snapshot-history-block">
+              <div id="snapshotHistoryLegend" class="snapshot-history-legend"></div>
+              <div style="overflow-x:auto"><div id="snapshotHistoryChart" class="chart snapshot-history-chart"></div></div>
+              <div class="table-wrap"><table id="snapshotHistoryTable" class="snapshot-history-table"></table></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ranking" class="view-panel">
+          <div class="entity-modebar">
+            <div><p class="eyebrow">RESULTADO DO MÊS E DO ANO</p><h3>Ranking</h3></div>
+            <div class="modebar-right">
+              <label>Pesquisar<input id="rankingSearch" type="search" placeholder="Grupo, concessionária ou BIR"></label>
+              <label>Ordenar por<select id="rankingSort"><option value="mtd">MTD</option><option value="ytd">YTD</option><option value="volume">Volume selecionado</option></select></label>
+              <label>Ordem<select id="rankingOrder"><option value="desc">Melhor → pior</option><option value="asc">Pior → melhor</option><option value="alpha">Alfabética</option></select></label>
+              <div class="entity-toggle" data-toggle="entity"><button type="button" class="active" data-entity="Grupo">Grupo</button><button type="button" data-entity="Concessionária">Concessionária</button></div>
+            </div>
+          </div>
+          <div class="period-block"><div class="period-title"><span id="rankingTitle">Ranking</span></div>
+            <div id="rankingNote" class="period-range-note"></div>
+            <div class="table-wrap"><table id="rankingTable" class="process-summary-table"></table></div>
+          </div>
+        </section>
+
+        <section id="timeline" class="view-panel">
+          <div class="entity-modebar timeline-modebar">
+            <div><p class="eyebrow">EVOLUÇÃO COMPARATIVA</p><h3>Linha do tempo</h3></div>
+            <div class="modebar-right"><label>Pesquisar<input id="timelineSearch" type="search" placeholder="Grupo, concessionária ou BIR"></label><label>Ordenar por<select id="timelineSort"></select></label><label>Ordem<select id="timelineOrder"><option value="desc">Melhor → pior</option><option value="asc">Pior → melhor</option><option value="alpha">Alfabética</option></select></label><div class="entity-toggle" data-toggle="entity"><button type="button" class="active" data-entity="Grupo">Grupo</button><button type="button" data-entity="Concessionária">Concessionária</button></div></div>
+          </div>
+          <div class="timeline-month-bar"><span>Meses</span><div id="timelineMonthChips" class="timeline-month-chips"></div></div>
+          <div class="timeline-component-bar"><span>Componentes exibidos em cada mês</span><div id="timelineComponentChips" class="timeline-component-chips"></div></div>
+          <div class="period-block">
+            <div class="period-title copy-title"><span id="timelinePeriodTitle">Ranking</span><button type="button" class="copy-image" data-copy="timelineBlock" aria-label="Copiar imagem">⧉<span class="copy-label">Copiar</span></button></div>
+            <div id="timelineBlock" class="dealer-timeline-panel"><div class="dealer-timeline-scroll"><table id="timelineTable" class="dealer-timeline-table timeline-table"></table></div></div>
+          </div>
+        </section>
+
+        <section id="topflop" class="view-panel">
+          <div class="entity-modebar">
+            <div><p class="eyebrow">RECORTE DO PERÍODO</p><h3>Top/Flop 20</h3></div>
+            <div class="entity-toggle" data-toggle="entity"><button type="button" class="active" data-entity="Grupo">Grupo</button><button type="button" data-entity="Concessionária">Concessionária</button></div>
+          </div>
+          <div class="ranking-row">
+            <div class="dealer-ranking-row-title top">Top 20</div>
+            <article class="ranking-card top-card copy-target" id="topBlock"><div class="ranking-title"><span id="topCardTitle">Processo · Top 20</span><button type="button" class="copy-image" data-copy="topBlock" aria-label="Copiar imagem">⧉<span class="copy-label">Copiar</span></button></div><div class="table-wrap"><table id="topTable" class="dealer-ranking-table"></table></div></article>
+            <div class="dealer-ranking-row-title flop">Flop 20</div>
+            <article class="ranking-card flop-card copy-target" id="flopBlock"><div class="ranking-title"><span id="flopCardTitle">Processo · Flop 20</span><button type="button" class="copy-image" data-copy="flopBlock" aria-label="Copiar imagem">⧉<span class="copy-label">Copiar</span></button></div><div class="table-wrap"><table id="flopTable" class="dealer-ranking-table"></table></div></article>
+          </div>
+        </section>
+
+        <section id="search" class="view-panel">
+          <div class="entity-modebar search-modebar">
+            <div><p class="eyebrow">CONSULTA DETALHADA</p><h3>Pesquisar Grupo / Concessionária</h3></div>
+            <div class="entity-toggle" data-toggle="entity"><button type="button" class="active" data-entity="Grupo">Grupo</button><button type="button" data-entity="Concessionária">Concessionária</button></div>
+          </div>
+          <div class="search-panel">
+            <label><span id="searchLabel">Nome do grupo</span><input id="entitySearch" type="search" placeholder="Comece a digitar"></label>
+            <div id="searchResults" class="search-results"></div>
+          </div>
+          <div id="entityDetail" class="detail-panel empty-state">Pesquise e selecione um grupo para abrir o detalhamento.</div>
+        </section>
+
+        <section id="chassis" class="view-panel">
+          <div class="entity-modebar">
+            <div><p class="eyebrow">RASTREABILIDADE</p><h3>Chassis do processo</h3></div>
+            <div class="chassis-count"><strong id="chassisVisibleCount">0</strong><span>registros exibidos</span></div>
+          </div>
+          <div class="chassis-filters">
+            <label>Status<select id="chassisStatus"><option value="">Todos</option></select></label>
+            <label>Data inicial<input id="chassisDateFrom" type="date"></label>
+            <label>Data final<input id="chassisDateTo" type="date"></label>
+            <label>Regional<select id="chassisRegion"><option value="">Todas</option></select></label>
+            <label>Grupo<input id="chassisGroup" type="search" placeholder="Digite parte do grupo"></label>
+            <label>Concessionária<input id="chassisDealer" type="search" placeholder="Nome ou BIR"></label>
+            <label>Chassi<input id="chassisVin" type="search" placeholder="Digite parte do chassi"></label>
+            <button type="button" id="clearChassisFilters">Limpar filtros</button>
+          </div>
+          <div id="chassisNote" class="period-range-note"></div>
+          <div class="table-wrap chassis-table-wrap"><table id="chassisTable" class="process-summary-table"></table></div>
+        </section>
+      </section>
+    </main>
+
+    <footer><span>Dashboard de Processos Renault</span><strong id="footerVersion">v1.5.0</strong></footer>
+  </div>
+
+  <dialog id="diagnosticsDialog" class="diagnostics-dialog">
+    <div class="dialog-head"><div><p class="eyebrow">QUALIDADE DAS BASES</p><h2>Conferência completa</h2></div><button type="button" id="closeDiagnostics" aria-label="Fechar">×</button></div>
+    <div id="diagnosticSummary" class="diagnostic-summary"></div>
+    <div class="diagnostic-section"><h3>Ocorrências</h3><div class="table-wrap tall"><table id="diagnosticTable"></table></div></div>
+    <details class="diagnostic-section"><summary>Diagnóstico de colunas</summary><div class="table-wrap tall"><table id="columnDiagnosticTable"></table></div></details>
+  </dialog>
+
+  <div id="overviewTooltip" role="tooltip" hidden></div>
+  <div id="toast" class="toast" role="status"></div>
+  <script>window.INLINE_PAYLOAD=null;</script><script src="./assets/dashboard.js"></script>
+</body>
+</html>
